@@ -185,7 +185,7 @@ module Sorcery
         config = sorcery_config
         # Modified to work with ResqueMailer by sending ID instead of self.
         mail = config.send(mailer).send(config.send(method),self.id.to_s)
-        if defined?(ActionMailer) and config.send(mailer).superclass == ActionMailer::Base
+        if defined?(ActionMailer) and config.send(mailer).ancestors.include?(ActiveRecord::Base)
           mail.deliver
         end
       end
