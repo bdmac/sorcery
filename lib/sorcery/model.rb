@@ -183,7 +183,8 @@ module Sorcery
       # supports both the ActionMailer 3 way of calling, and the plain old Ruby object way.
       def generic_send_email(method, mailer)
         config = sorcery_config
-        mail = config.send(mailer).send(config.send(method),self)
+        # Modified to work with ResqueMailer by sending ID instead of self.
+        mail = config.send(mailer).send(config.send(method),self.id.to_s)
         if defined?(ActionMailer) and config.send(mailer).superclass == ActionMailer::Base
           mail.deliver
         end
